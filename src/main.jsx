@@ -4,12 +4,26 @@ import ReactDOM from "react-dom/client";
 
 import { Provider } from "react-redux";
 
+import { BrowserRouter } from "react-router-dom";
+
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
 import store from "./redux/store";
 
 import App from "./App";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-);
+import "./App.css";
+
+ReactDOM.createRoot(document.getElementById("root"))
+
+  .render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+
+        <ToastContainer position="top-right" autoClose={2000} />
+      </BrowserRouter>
+    </Provider>,
+  );

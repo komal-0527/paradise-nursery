@@ -4,44 +4,58 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { addToCart } from "../redux/CartSlice";
 
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { FaCartPlus } from "react-icons/fa";
 
 function ProductList() {
   const dispatch = useDispatch();
 
-  const cart = useSelector((state) => state.cart.items);
+  const cartItems = useSelector((state) => state.cart.items);
+
+  const categories = ["Indoor", "Flower", "Outdoor"];
 
   return (
-    <>
-      <nav className="navbar">
-        <Link to="/">Home</Link>
+    <div className="product-container">
+      <h1>Our Plants</h1>
 
-        <Link to="/plants">Plants</Link>
+      {categories.map((category) => (
+        <div key={category}>
+          <h2>{category} Plants</h2>
 
-        <Link to="/cart">Cart 🛒 {cart.length}</Link>
-      </nav>
+          <div className="product-grid">
+            {plants
 
-      <div className="product-container">
-        {plants.map((plant) => (
-          <div className="card" key={plant.id}>
-            <img src={plant.image} />
+              .filter((plant) => plant.category === category)
 
-            <h3>{plant.name}</h3>
+              .map((plant) => (
+                <div className="card" key={plant.id}>
+                  <img src={plant.image} alt={plant.name} />
 
-            <p>${plant.price}</p>
+                  <h3>{plant.name}</h3>
 
-            <button
-              disabled={cart.some((item) => item.id === plant.id)}
-              onClick={() => dispatch(addToCart(plant))}
-            >
-              {cart.some((item) => item.id === plant.id)
-                ? "Added"
-                : "Add to Cart"}
-            </button>
+                  <p>${plant.price}</p>
+
+                  <button
+                    disabled={cartItems.some((item) => item.id === plant.id)}
+                    onClick={() => {
+                      dispatch(addToCart(plant));
+
+                      toast.success(`${plant.name} added to cart`);
+                    }}
+                  >
+                    <FaCartPlus />
+
+                    {cartItems.some((item) => item.id === plant.id)
+                      ? "Added"
+                      : "Add Cart"}
+                  </button>
+                </div>
+              ))}
           </div>
-        ))}
-      </div>
-    </>
+        </div>
+      ))}
+    </div>
   );
 }
 

@@ -1,24 +1,32 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-import ProductList from "./components/ProductList";
-import CartItem from "./components/CartItem";
+import Navbar from "./components/Navbar";
+
 import AboutUs from "./components/AboutUs";
 
-import "./App.css";
+import ProductList from "./components/ProductList";
+
+import CartItem from "./components/CartItem";
+
+import { Link } from "react-router-dom";
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
+      <Navbar />
+
       <Routes>
         <Route
           path="/"
           element={
             <div className="landing">
-              <h1>Paradise Nursery</h1>
+              <h1>🌿 Paradise Nursery</h1>
 
-              <p>Beautiful plants for your beautiful home</p>
+              <p>Bring nature into your home</p>
 
-              <button>Get Started</button>
+              <Link to="/plants">
+                <button>Get Started</button>
+              </Link>
 
               <AboutUs />
             </div>
@@ -29,7 +37,7 @@ function App() {
 
         <Route path="/cart" element={<CartItem />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 

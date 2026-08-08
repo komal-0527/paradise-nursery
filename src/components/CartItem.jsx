@@ -1,62 +1,77 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { increase, decrease, remove } from "../redux/CartSlice";
+import {
+  increaseQuantity,
+  decreaseQuantity,
+  removeFromCart,
+} from "../redux/CartSlice";
 
-import { Link } from "react-router-dom";
+import { FaPlus, FaMinus, FaTrash } from "react-icons/fa";
+
+import { toast } from "react-toastify";
 
 function CartItem() {
-  const items = useSelector((state) => state.cart.items);
-
   const dispatch = useDispatch();
+
+  const items = useSelector((state) => state.cart.items);
 
   const total = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
+
     0,
   );
 
   return (
-    <>
-      <nav className="navbar">
-        <Link to="/">Home</Link>
-
-        <Link to="/plants">Plants</Link>
-
-        <Link to="/cart">Cart</Link>
-      </nav>
-
+    <div className="cart-page">
       <h1>Shopping Cart</h1>
 
-      {items.map((item) => (
-        <div className="card">
-          <img src={item.image} />
+      <div className="cart-container">
+        {items.length === 0 ? (
+          <h2>Cart is empty</h2>
+        ) : (
+          items.map((item) => (
+            <div className="cart-card" key={item.id}>
+              <img src={item.image} alt={item.name} />
 
-          <h3>{item.name}</h3>
+              <h3>{item.name}</h3>
 
-          <p>Unit Price: ${item.price}</p>
+              <p>Unit: ${item.price}</p>
 
-          <p>Total: ${item.price * item.quantity}</p>
+              <p>Total: ${item.price * item.quantity}</p>
 
-          <button onClick={() => dispatch(decrease(item.id))}>-</button>
+              <div className="quantity-box">
+                <button onClick={() => dispatch(decreaseQuantity(item.id))}>
+                  <FaMinus />
+                </button>
 
-          <span>{item.quantity}</span>
+                <span>{item.quantity}</span>
 
-          <button onClick={() => dispatch(increase(item.id))}>+</button>
+                <button onClick={() => dispatch(increaseQuantity(item.id))}>
+                  <FaPlus />
+                </button>
+              </div>
 
-          <button onClick={() => dispatch(remove(item.id))}>Delete</button>
-        </div>
-      ))}
+              <button
+                onClick={() => {
+                  dispatch(removeFromCart(item.id));
+
+                  toast.error(`${item.name} removed`);
+                }}
+              >
+                <FaTrash />
+                Delete
+              </button>
+            </div>
+          ))
+        )}
+      </div>
 
       <h2>Total Amount: ${total}</h2>
 
-      <button>Checkout - Coming Soon</button>
-
-      <br />
-      <br />
-
-      <Link to="/plants">
-        <button>Continue Shopping</button>
-      </Link>
-    </>
+      <button onClick={() => toast.info("Checkout Coming Soon")}>
+        Checkout
+      </button>
+    </div>
   );
 }
 
