@@ -9,9 +9,9 @@ function Navbar() {
 
   return (
     <nav className="navbar">
-      <h2>🌿 Paradise Nursery</h2>
+      <div className="logo">🌿 Paradise Nursery</div>
 
-      <div>
+      <div className="nav-links">
         <Link to="/">
           <FaHome />
           Home

@@ -2,7 +2,7 @@ import plants from "../data/plants";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { addToCart } from "../redux/CartSlice";
+import { addItem } from "../redux/CartSlice";
 
 import { toast } from "react-toastify";
 
@@ -20,7 +20,7 @@ function ProductList() {
       <h1>Our Plants</h1>
 
       {categories.map((category) => (
-        <div key={category}>
+        <section key={category}>
           <h2>{category} Plants</h2>
 
           <div className="product-grid">
@@ -39,7 +39,7 @@ function ProductList() {
                   <button
                     disabled={cartItems.some((item) => item.id === plant.id)}
                     onClick={() => {
-                      dispatch(addToCart(plant));
+                      dispatch(addItem(plant));
 
                       toast.success(`${plant.name} added to cart`);
                     }}
@@ -48,12 +48,12 @@ function ProductList() {
 
                     {cartItems.some((item) => item.id === plant.id)
                       ? "Added"
-                      : "Add Cart"}
+                      : "Add to Cart"}
                   </button>
                 </div>
               ))}
           </div>
-        </div>
+        </section>
       ))}
     </div>
   );
